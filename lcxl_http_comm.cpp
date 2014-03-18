@@ -153,3 +153,13 @@ void CHeadList::SetHeadItems(const std::string Index, const std::string Value)
 		push_back(TmpHead);
 	}
 }
+
+std::string CHttpHeadList::GetHeadText()
+{
+	return SaveToString(": ", HTTP_LINE_BREAK);
+}
+
+void CHttpHeadList::SetHeadText(const std::string Value)
+{
+	LoadFromString(Value, ":", HTTP_LINE_BREAK);
+}

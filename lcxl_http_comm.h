@@ -41,7 +41,7 @@ typedef struct _HeadRec {
 
 class CHeadList :public std::list<HeadRec> {
 
-
+public:
 	///	<summary>
 	///	  保存到字符串中
 	///	</summary>
@@ -74,4 +74,32 @@ class CHeadList :public std::list<HeadRec> {
 	std::string GetHeadItems(const std::string Index);
 	void SetHeadItems(const std::string Index, const std::string Value);
 };
+
+class CHttpHeadList :public CHeadList {
+public:
+	std::string GetHeadText();
+	void SetHeadText(const std::string Value);
+public:
+	virtual long long GetContentLength()=0;
+	virtual void BeginTransferContent(bool IsWriteContent) = 0;
+	virtual long TransferingContent(void *Data, long DataLen) = 0;
+	virtual void EndTransferContent()=0;
+};
+
+
+#define HTTP_LINE_BREAK "\r\n"
+#define DOUBLE_HTTP_LINE_BREAK "\r\n\r\n"
+
+#define REQUEST_ACCPET "Accept"
+#define REQUEST_HOST "Host"
+#define REQUEST_ENCODING "Encoding"
+#define REQUEST_REFERER "Referer"
+#define REQUEST_CONNECTION "Connection"
+#define REQUEST_USER_AGENT "User-Agent"
+#define REQUEST_ACCEPT_CHARSET "Accept-Charset"
+#define REQUEST_ACCEPT_ENCODING "Accept-Encoding"
+#define REQUEST_ACCEPT_LANGUAGE "Accept-Language"
+#define REQUEST_CACHE_COONTROL "Cache-Control"
+#define REQUEST_COOKIE "Cookie"
+
 #endif
