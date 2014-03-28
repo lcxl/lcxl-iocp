@@ -36,4 +36,15 @@ std::wstring &rtrim(std::wstring &_Str);
 // trim from both ends
 std::string &trim(std::string &_Str);
 std::wstring &trim(std::wstring &_Str);
+
+std::string string_format(const std::string fmt, ...);
+std::wstring wstring_format(const std::wstring fmt, ...);
+
+#ifdef _UNICODE
+#define tstring_format wstring_format
+#else
+#define tstring_format string_format
+#endif // _UNICODE
+
+
 #endif
