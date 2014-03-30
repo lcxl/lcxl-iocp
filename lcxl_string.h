@@ -3,6 +3,8 @@
 
 #include <string>
 #include <tchar.h>
+#include <algorithm>
+
 
 #define tstring basic_string<TCHAR>
 
@@ -40,10 +42,24 @@ std::wstring &trim(std::wstring &_Str);
 std::string string_format(const std::string fmt, ...);
 std::wstring wstring_format(const std::wstring fmt, ...);
 
+__inline std::string &string_tolower(std::string &str) {
+	std::transform(str.begin(), str.end(), str.begin(), ::tolower);
+	return str;
+}
+
+__inline std::string &wstring_tolower(std::string &str) {
+	std::transform(str.begin(), str.end(), str.begin(), ::tolower);
+	return str;
+}
+
+
+
 #ifdef _UNICODE
 #define tstring_format wstring_format
+#define tstring_tolower wstring_tolower
 #else
 #define tstring_format string_format
+#define tstring_tolower string_tolower
 #endif // _UNICODE
 
 
