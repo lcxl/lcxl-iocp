@@ -82,6 +82,13 @@ private:
 	virtual void OnIOCPEvent(IocpEventEnum EventType, CSocketObj *SockObj, PIOCPOverlapped Overlapped);
 protected:
 	virtual void OnIOCPEvent(IocpEventEnum EventType, CLLSockObj *SockObj, PIOCPOverlapped Overlapped);
+public:
+	CCustomIOCPLCXLList(CIOCPManager *AIOCPMgr) :CCustomIOCPBaseList(AIOCPMgr){
+
+	}
+	virtual ~CCustomIOCPLCXLList() {
+
+	}
 };
 
 class CIOCPLCXLList;
@@ -97,7 +104,7 @@ typedef _LCXLFunctionDelegate<CIOCPLCXLList, EOnListenLCXLEvent> DOnListenLCXLEv
 
 
 // LCXL协议实现类
-class CIOCPLCXLList : public CCustomIOCPBaseList{
+class CIOCPLCXLList : public CCustomIOCPLCXLList{
 private:
 	DOnIOCPLCXLEvent mIOCPEvent;
 	DOnListenLCXLEvent mListenEvent;
@@ -106,6 +113,13 @@ protected:
 	// 监听事件
 	virtual void OnListenEvent(ListenEventEnum EventType, CSocketLst *SockLst);
 public:
+	CIOCPLCXLList(CIOCPManager *AIOCPMgr) :CCustomIOCPLCXLList(AIOCPMgr) {
+
+	}
+	virtual ~CIOCPLCXLList() {
+
+	}
+
 	DOnIOCPLCXLEvent GetIOCPEvent() {
 		return mIOCPEvent;
 	};
