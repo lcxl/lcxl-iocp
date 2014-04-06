@@ -108,8 +108,8 @@ void CCustomIOCPLCXLList::OnIOCPEvent(IocpEventEnum EventType, CSocketObj *SockO
 		while (LLSockObj->mCurDataLen >= sizeof(ULONG) &&
 			LLSockObj->mCurDataLen - sizeof(ULONG) >= *(PULONG)LLSockObj->mBuf) {
 
-			LLSockObj->mRecvData = LLSockObj->mBuf;
-			LLSockObj->mRecvDataLen = *(PULONG)LLSockObj->mBuf + sizeof(ULONG);
+			LLSockObj->mRecvData = (PBYTE)LLSockObj->mBuf + sizeof(ULONG);
+			LLSockObj->mRecvDataLen = *(PULONG)LLSockObj->mBuf;
 			LLSockObj->mIsRecvAll = TRUE;
 			OnIOCPEvent(ieRecvAll, LLSockObj, Overlapped);
 
