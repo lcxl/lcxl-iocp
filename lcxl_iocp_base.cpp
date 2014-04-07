@@ -1185,23 +1185,17 @@ void CCustomIOCPBaseList::CloseAllSockBase()
 	UnlockSockList();
 }
 
-#ifdef _UNICODE
-#define GetHostName GetHostNameW
-#else
-#define GetHostName gethostname
-#endif // _UNICODE
-
 void CCustomIOCPBaseList::GetLocalAddrs(vector<tstring> &Addrs)
 {
-	LPTSTR sHostName;
+	LPSTR sHostName;
 	ADDRINFOT _Hints;
 	int _Retval;
 	PADDRINFOT _ResultAddInfo;
 	PADDRINFOT _NextAddInfo;
 
 	Addrs.clear();
-	sHostName = new TCHAR[MAX_PATH];
-	if (GetHostName(sHostName, MAX_PATH) == SOCKET_ERROR) {
+	sHostName = new char[MAX_PATH];
+	if (gethostname(sHostName, MAX_PATH) == SOCKET_ERROR) {
 		return;
 	}
 
@@ -1209,7 +1203,8 @@ void CCustomIOCPBaseList::GetLocalAddrs(vector<tstring> &Addrs)
 	_Hints.ai_family = AF_UNSPEC;
 	_Hints.ai_socktype = SOCK_STREAM;
 	_Hints.ai_protocol = IPPROTO_TCP;
-	_Retval = GetAddrInfo(sHostName, NULL, &_Hints, &_ResultAddInfo);
+	std::tstring hostname = string_to_tstring(std::string(sHostName));
+	_Retval = GetAddrInfo(hostname.c_str(), NULL, &_Hints, &_ResultAddInfo);
 	if (_Retval == 0) {
 		DWORD _AddrStringLen;
 		LPTSTR _AddrString;

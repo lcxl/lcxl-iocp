@@ -5,7 +5,9 @@
 #include <functional> 
 #include <cctype>
 #include <stdarg.h>
-
+#ifdef WIN32
+#include <windows.h>
+#endif
 std::wstring string_to_wstring(const std::string &str)
 {
 	// string转wstring
@@ -27,6 +29,21 @@ std::string wstring_to_string(const std::wstring &str)
 	wcstombs(p, str.c_str(), len);
 	std::string str1(p);
 	delete[] p;
+	return str1;
+}
+
+std::string wstring_to_utf8string(const std::wstring &str)
+{
+	char* result;
+	int textlen;
+	textlen = WideCharToMultiByte(CP_UTF8, 0, str.c_str(), -1, NULL, 0, NULL, NULL);
+	
+	result = (char *)malloc((textlen + 1)*sizeof(char));
+	memset(result, 0, sizeof(char)* (textlen + 1));
+	WideCharToMultiByte(CP_UTF8, 0, str.c_str(), -1, result, textlen, NULL, NULL);
+	
+	std::string str1(result);
+	free(result);
 	return str1;
 }
 
@@ -106,4 +123,19 @@ std::wstring wstring_format(const std::wstring fmt, ...)
 			size *= 2;
 	}
 	return str;
+}
+
+int string_to_mac(const std::string str, unsigned char mac[], int mac_size)
+{
+	int len = (str.length() + 1) / 3;
+	int i;
+
+	if (len > mac_size) {
+		return -1;
+	}
+	for (i = 0; i < len; i++) {
+		str.substr(i*3, 2);
+		mac[i] = (unsigned char)strtol(str.substr(i * 3, 2).c_str(), NULL, 16);
+	}
+	return len;
 }
