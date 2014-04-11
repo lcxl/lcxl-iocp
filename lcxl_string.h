@@ -16,6 +16,8 @@
 
 std::wstring string_to_wstring(const std::string &str);
 std::string wstring_to_string(const std::wstring &str);
+
+std::wstring utf8string_to_wstring(const std::string &str);
 std::string wstring_to_utf8string(const std::wstring &str);
 #ifdef _UNICODE
 #define tstring_to_wstring(__STR) (__STR)

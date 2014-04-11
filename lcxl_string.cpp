@@ -32,6 +32,22 @@ std::string wstring_to_string(const std::wstring &str)
 	return str1;
 }
 
+std::wstring utf8string_to_wstring(const std::string &str)
+{
+	wchar_t *result;
+	int textlen;
+	textlen = MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, NULL, 0);
+	result = (wchar_t *)malloc((textlen + 1)*sizeof(wchar_t));
+
+	result = (wchar_t *)malloc((textlen + 1)*sizeof(wchar_t));
+	memset(result, 0, sizeof(wchar_t)* (textlen + 1));
+	MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, result, textlen);
+
+	std::wstring str1(result);
+	free(result);
+	return str1;
+}
+
 std::string wstring_to_utf8string(const std::wstring &str)
 {
 	char* result;
