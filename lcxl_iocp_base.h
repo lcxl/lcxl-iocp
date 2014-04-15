@@ -15,12 +15,6 @@ using namespace std;
 #define ADDR_STRING_MAX_LEN 1024
 
 #ifdef _DEBUG
-#define RELEASE_INLINE
-#else
-#define RELEASE_INLINE inline
-#endif // DEBUG
-
-#ifdef _DEBUG
 void OutputDebugStr(const TCHAR fmt[], ...);
 #else
 #define OutputDebugStr(__fmt, ...)
@@ -226,8 +220,8 @@ private:
 	BOOL mIsSerSocket;
 	BOOL mIsSending;
 	queue<PIOCPOverlapped> mSendDataQueue;
-	RELEASE_INLINE BOOL WSARecv();
-	RELEASE_INLINE BOOL WSASend(PIOCPOverlapped Overlapped);
+	 BOOL WSARecv();
+	 BOOL WSASend(PIOCPOverlapped Overlapped);
 	void SetIsSending(BOOL value) {
 		mIsSending = value;
 	}
@@ -283,10 +277,10 @@ public:
 	LPVOID GetRecvBuf() {
 		return mRecvBuf;
 	}
-	RELEASE_INLINE void SetRecvBufLenBeforeInit(DWORD NewRecvBufLen);
+	 void SetRecvBufLenBeforeInit(DWORD NewRecvBufLen);
 	BOOL SendData(LPVOID Data, DWORD DataLen, BOOL UseGetSendDataFunc = FALSE);
-	RELEASE_INLINE LPVOID GetSendData(DWORD DataLen);
-	RELEASE_INLINE void FreeSendData(LPVOID Data);
+	 LPVOID GetSendData(DWORD DataLen);
+	 void FreeSendData(LPVOID Data);
 	BOOL SetKeepAlive(BOOL IsOn, int KeepAliveTime = 50000, int KeepAliveInterval = 30000);
 
 	BOOL GetIsSerSocket() {
@@ -323,11 +317,11 @@ protected:
 	/// <summary>
 	/// 这个只是单纯的临界区锁，要更加有效的锁定列表，使用 LockSockList
 	/// </summary>
-	RELEASE_INLINE void Lock();
+	 void Lock();
 	/// <summary>
 	/// 添加sockobj到列表中，返回True表示成功，返回False表示失败，注意这里要处理IsFreeing为True的情况
 	/// </summary>
-	RELEASE_INLINE void Unlock();
+	 void Unlock();
 	/// <summary>
 	/// 添加sockobj到列表中，返回True表示成功，返回False表示失败，注意这里要处理IsFreeing为True的情况
 	/// </summary>
@@ -347,7 +341,7 @@ protected:
 	/// <summary>
 	/// 在IOCP管理器中注册SockBase
 	/// </summary>
-	RELEASE_INLINE BOOL IOCPRegSockBase(CSocketBase *SockBase);
+	 BOOL IOCPRegSockBase(CSocketBase *SockBase);
 	void WaitForDestroyEvent();
 	/// <summary>
 	/// 检查是否可以释放
@@ -432,17 +426,17 @@ protected:
 public:
 	CIOCPManager(int IOCPThreadCount = 0);
 	virtual ~CIOCPManager();
-	RELEASE_INLINE void LockSockList();
+	 void LockSockList();
 
 	vector<CCustomIOCPBaseList*> &GetSockList() {
 		return mSockList;
 	}
-	RELEASE_INLINE void UnlockSockList();
-	RELEASE_INLINE void LockOverLappedList();
+	 void UnlockSockList();
+	 void LockOverLappedList();
 	vector<PIOCPOverlapped> &GetOverLappedList() {
 		return mOverLappedList;
 	}
-	RELEASE_INLINE void UnlockOverLappedList();
+	 void UnlockOverLappedList();
 	//友类
 	friend class CSocketBase;
 	//友类

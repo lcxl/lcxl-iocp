@@ -464,7 +464,7 @@ BOOL CSocketLst::StartListen(CCustomIOCPBaseList *IOCPList, int Port, u_long InA
 
 
 
-RELEASE_INLINE BOOL CSocketObj::WSARecv()
+ BOOL CSocketObj::WSARecv()
 {
 	DWORD Flags;
 
@@ -478,7 +478,7 @@ RELEASE_INLINE BOOL CSocketObj::WSARecv()
 		&mAssignedOverlapped->lpOverlapped, NULL) == 0) || (WSAGetLastError() == WSA_IO_PENDING);
 }
 
-RELEASE_INLINE BOOL CSocketObj::WSASend(PIOCPOverlapped Overlapped)
+ BOOL CSocketObj::WSASend(PIOCPOverlapped Overlapped)
 {
 	// OutputDebugStr(Format('WSASend:Overlapped=%p,Overlapped=%d\n',[Overlapped, Integer(Overlapped.OverlappedType)]));
 	// 清空Overlapped
@@ -642,7 +642,7 @@ BOOL CSocketObj::GetLocalAddr(tstring &Address, WORD &Port)
 	return FALSE;
 }
 
-RELEASE_INLINE void CSocketObj::SetRecvBufLenBeforeInit(DWORD NewRecvBufLen)
+ void CSocketObj::SetRecvBufLenBeforeInit(DWORD NewRecvBufLen)
 {
 	assert(this->mIniteStatus == sisInitializing && NewRecvBufLen > 0);
 	if (mRecvBufLen != NewRecvBufLen) {
@@ -722,12 +722,12 @@ BOOL CSocketObj::SendData(LPVOID Data, DWORD DataLen, BOOL UseGetSendDataFunc /*
 	return resu;
 }
 
-RELEASE_INLINE LPVOID CSocketObj::GetSendData(DWORD DataLen)
+ LPVOID CSocketObj::GetSendData(DWORD DataLen)
 {
 	return malloc(DataLen);
 }
 
-RELEASE_INLINE void CSocketObj::FreeSendData(LPVOID Data)
+ void CSocketObj::FreeSendData(LPVOID Data)
 {
 	free(Data);
 }
@@ -746,12 +746,12 @@ BOOL CSocketObj::SetKeepAlive(BOOL IsOn, int KeepAliveTime /*= 50000*/, int Keep
 }
 
 
-RELEASE_INLINE void CCustomIOCPBaseList::Lock()
+ void CCustomIOCPBaseList::Lock()
 {
 	EnterCriticalSection(&mSockBaseCS);
 }
 
-RELEASE_INLINE void CCustomIOCPBaseList::Unlock()
+ void CCustomIOCPBaseList::Unlock()
 {
 	LeaveCriticalSection(&mSockBaseCS);
 }
@@ -939,7 +939,7 @@ BOOL CCustomIOCPBaseList::FreeSockBase(CSocketBase *SockBase)
 	return TRUE;
 }
 
-RELEASE_INLINE BOOL CCustomIOCPBaseList::IOCPRegSockBase(CSocketBase *SockBase)
+ BOOL CCustomIOCPBaseList::IOCPRegSockBase(CSocketBase *SockBase)
 {
 	BOOL resu;
 	// 在IOCP中注册此Socket
@@ -1418,22 +1418,22 @@ CIOCPManager::~CIOCPManager()
 	WSACleanup();
 }
 
-RELEASE_INLINE void CIOCPManager::LockSockList()
+ void CIOCPManager::LockSockList()
 {
 	EnterCriticalSection(&mSockListCS);
 }
 
-RELEASE_INLINE void CIOCPManager::UnlockSockList()
+ void CIOCPManager::UnlockSockList()
 {
 	LeaveCriticalSection(&mSockListCS);
 }
 
-RELEASE_INLINE void CIOCPManager::LockOverLappedList()
+ void CIOCPManager::LockOverLappedList()
 {
 	EnterCriticalSection(&mOverLappedListCS);
 }
 
-RELEASE_INLINE void CIOCPManager::UnlockOverLappedList()
+ void CIOCPManager::UnlockOverLappedList()
 {
 	LeaveCriticalSection(&mOverLappedListCS);
 }
