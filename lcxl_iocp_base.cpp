@@ -19,9 +19,12 @@ void OutputDebugStr(const TCHAR fmt[], ...)
 	va_start(argptr, fmt);
 	int bufsize = _vsntprintf(NULL, 0, fmt, argptr) + 2;
 	buf = (PTCHAR)malloc(bufsize*sizeof(TCHAR));
-	_vsntprintf(buf, bufsize, fmt, argptr);
-	OutputDebugString(buf);
-	free(buf);
+	if (buf != NULL) {
+		_vsntprintf(buf, bufsize, fmt, argptr);
+		OutputDebugString(buf);
+		free(buf);
+	}
+	
 }
 #endif // _DEBUG
 
