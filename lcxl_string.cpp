@@ -45,14 +45,16 @@ std::wstring utf8string_to_wstring(const std::string &str)
 	std::wstring str1;
 
 	textlen = MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, NULL, 0);
-	
-	result = (wchar_t *)malloc((textlen + 1)*sizeof(wchar_t));
-	if (result != NULL) {
-		memset(result, 0, sizeof(wchar_t)* (textlen + 1));
-		MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, result, textlen);
-		str1 = result;
-		free(result);
+	if (textlen > 0) {
+		result = (wchar_t *)malloc((textlen + 1)*sizeof(wchar_t));
+		if (result != NULL) {
+			memset(result, 0, sizeof(wchar_t)* (textlen + 1));
+			MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, result, textlen);
+			str1 = result;
+			free(result);
+		}
 	}
+	
 	return str1;
 }
 
@@ -60,14 +62,19 @@ std::string wstring_to_utf8string(const std::wstring &str)
 {
 	char* result;
 	int textlen;
+	std::string str1;
 	textlen = WideCharToMultiByte(CP_UTF8, 0, str.c_str(), -1, NULL, 0, NULL, NULL);
+	if (textlen > 0) {
+		result = (char *)malloc((textlen + 1)*sizeof(char));
+		if (result != NULL) {
+			memset(result, 0, sizeof(char)* (textlen + 1));
+			WideCharToMultiByte(CP_UTF8, 0, str.c_str(), -1, result, textlen, NULL, NULL);
+
+			str1 = result;
+			free(result);
+		}
+	}
 	
-	result = (char *)malloc((textlen + 1)*sizeof(char));
-	memset(result, 0, sizeof(char)* (textlen + 1));
-	WideCharToMultiByte(CP_UTF8, 0, str.c_str(), -1, result, textlen, NULL, NULL);
-	
-	std::string str1(result);
-	free(result);
 	return str1;
 }
 
